@@ -145,69 +145,7 @@ Top Random Forest feature importances:
   TenureByAge (0.082), BalanceSalaryRatio (0.070), Tenure (0.044),
   IsActiveMember (0.037)
 
-
-7. SAVED ARTIFACTS (models/ folder)
-------------------------------------------------------------------------------
-models/scaler.pkl            Fitted StandardScaler
-models/feature_columns.pkl   Ordered list of the 16 feature names
-models/threshold.pkl         Tuned decision threshold (0.59)
-models/ann_churn.keras       Trained production ANN (SMOTE model)
-
-
-8. REQUIREMENTS
-------------------------------------------------------------------------------
-Python 3.x with the following packages:
-  numpy, pandas, matplotlib, seaborn, scikit-learn, imbalanced-learn,
-  tensorflow (Keras), jupyter
-
-Install with:
-  pip install numpy pandas matplotlib seaborn scikit-learn imbalanced-learn
-  pip install tensorflow jupyter
-
-Note: the notebook was run on macOS (Apple Silicon) with Python 3.14,
-scikit-learn 1.9.0, imbalanced-learn 0.14.2 and TensorFlow 2.22.0rc0.
-
-
-9. HOW TO RUN
-------------------------------------------------------------------------------
-1. Put Churn_Modelling.csv in the same folder as the notebook.
-2. Install the requirements listed above.
-3. Open the notebook in Jupyter and run all cells from top to bottom.
-4. The trained model and preprocessing objects are written to models/.
-
-All random seeds are fixed (RANDOM_STATE = 42), but small run-to-run
-differences can still occur with TensorFlow.
-
-
-10. USING THE SAVED MODEL
-------------------------------------------------------------------------------
-A new raw customer record must go through the same preprocessing as the
-training data before prediction:
-
-  1. Drop RowNumber, CustomerId and Surname.
-  2. Add the five engineered features (see section 4).
-  3. One-hot encode Geography and Gender (drop_first=True), then reindex the
-     columns to match feature_columns.pkl (fill missing dummies with 0).
-  4. Scale with scaler.pkl.
-  5. Predict a probability with the model and compare it to threshold.pkl.
-
-Sketch:
-
-  import pickle, pandas as pd
-  from tensorflow import keras
-
-  scaler    = pickle.load(open("models/scaler.pkl", "rb"))
-  columns   = pickle.load(open("models/feature_columns.pkl", "rb"))
-  threshold = pickle.load(open("models/threshold.pkl", "rb"))
-  model     = keras.models.load_model("models/ann_churn.keras")
-
-  # X_new: DataFrame already preprocessed as described above
-  X_new    = X_new.reindex(columns=columns, fill_value=0).astype(float)
-  prob     = model.predict(scaler.transform(X_new), verbose=0).ravel()
-  will_churn = prob >= threshold
-
-
-11. LIMITATIONS AND FUTURE WORK
+7. LIMITATIONS AND FUTURE WORK
 ------------------------------------------------------------------------------
 - Try class weighting and SMOTE together, and focal loss.
 - Add precision-recall curves and check probability calibration
@@ -226,7 +164,7 @@ Sketch:
   boosting as full predictive models.
 
 
-12. CONCLUSION
+8. CONCLUSION
 ------------------------------------------------------------------------------
 The project shows how data preprocessing, feature engineering, imbalance
 handling and threshold tuning affect a churn model far more than the choice
