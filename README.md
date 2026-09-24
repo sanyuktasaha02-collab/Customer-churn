@@ -1,6 +1,4 @@
-==============================================================================
 CUSTOMER CHURN PREDICTION USING ARTIFICIAL NEURAL NETWORKS (ANN)
-==============================================================================
 
 Author : Sanyukta Saha, MSc Statistics and Computing (BHU)
 
